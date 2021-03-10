@@ -193,6 +193,7 @@ var
 begin
   appINI := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
   path := appINI.ReadString('Settings', 'path', path);
+  if startmaximized <> 'done' then
   startmaximized := appINI.ReadString('Settings', 'startmaximized',
     startmaximized);
   backgroundcolor := appINI.ReadString('Settings', 'backgroundcolor',
