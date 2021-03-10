@@ -254,10 +254,10 @@ begin
   ListView1.Columns[0].Width := ListView1.Width - 50;
   ListView1.TabStop := False;
   if Lowercase(startmaximized) = 'yes' then
-  begin
-    ShowWindow(Handle, SW_MAXIMIZE);
+    begin
+    ShowWindow(handle, SW_MAXIMIZE);
     startmaximized := 'done';
-  end;
+    end;
 end;
 
 // Display the content of a file in the text editor
@@ -586,18 +586,18 @@ var
 begin
   SaveDialog1.FileName := lastfile;
   if SaveDialog1.Execute then begin
-    RichEdit1.Lines.SaveToFile(SaveDialog1.FileName);
-    Form1.Caption := SaveDialog1.FileName;
-    if FileExists(SaveDialog1.FileName) then
     begin
-      buttonSelected := MessageDlg('Do you want to replace the existing file '
-        + SaveDialog1.FileName + '?', mtCustom, [mbYes, mbNo, mbCancel], 0);
-      if buttonSelected = mrYes then
+      if FileExists(SaveDialog1.FileName) then
       begin
-        lastfile := SaveDialog1.FileName;
-        lasttext := RichEdit1.Text;
-        listview1.ClearSelection;
+        buttonSelected := MessageDlg('Do you want to replace the existing file '
+          + SaveDialog1.FileName + '?', mtCustom, [mbYes, mbNo, mbCancel], 0);
+        if buttonSelected <> mrYes then system.exit;
       end;
+      RichEdit1.Lines.SaveToFile(SaveDialog1.FileName);
+      Form1.Caption := SaveDialog1.FileName;
+      lastfile := SaveDialog1.FileName;
+      lasttext := RichEdit1.Text;
+      listview1.ClearSelection;
     end;
   end;
 end;

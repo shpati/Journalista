@@ -4,7 +4,7 @@ object Form1: TForm1
   AutoScroll = False
   Caption = 'Journalista'
   ClientHeight = 426
-  ClientWidth = 632
+  ClientWidth = 638
   Color = clBtnFace
   Constraints.MinHeight = 300
   Constraints.MinWidth = 400
@@ -22,7 +22,7 @@ object Form1: TForm1
   OnPaint = checkboxclick
   OnResize = positioning
   DesignSize = (
-    632
+    638
     426)
   PixelsPerInch = 96
   TextHeight = 13
@@ -44,13 +44,13 @@ object Form1: TForm1
     Top = 0
     Width = 201
     Height = 161
-    Date = 44255.933909201390000000
+    Date = 44255.519381851850000000
     TabOrder = 0
     WeekNumbers = True
     OnClick = checkboxclick
   end
   object ListView1: TListView
-    Left = 424
+    Left = 430
     Top = 200
     Width = 201
     Height = 207
@@ -74,7 +74,7 @@ object Form1: TForm1
   object StatusBar1: TStatusBar
     Left = 0
     Top = 406
-    Width = 632
+    Width = 638
     Height = 20
     Panels = <>
     SimplePanel = True
