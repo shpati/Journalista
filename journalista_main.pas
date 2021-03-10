@@ -856,8 +856,7 @@ end;
 procedure TForm1.About(Sender: TObject);
 begin
   Application.MessageBox('Journalista 2.0.0 - MIT License' + sLineBreak +
-    'Copyright (c) MMXXI, Shpati Koleka.',
-    'About Program', 0)
+    'Copyright © MMXXI, Shpati Koleka.', 'About Program', 0)
 end;
 
 end.
