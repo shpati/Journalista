@@ -67,6 +67,7 @@ type
     CheckBox2: TCheckBox;
     Label2: TLabel;
     Edit2: TEdit;
+    StaticText1: TStaticText;
     procedure formCreate(Sender: TObject);
     procedure initialsettings;
     procedure readsettings;
@@ -119,6 +120,7 @@ type
     procedure favoritesfromini;
     procedure Settings(Sender: TObject);
     procedure About(Sender: TObject);
+    procedure Showall(Sender: TObject);
 
   private
     { Private declarations }
@@ -130,7 +132,7 @@ var
   Form1: TForm1;
   lastfile, lasttext, searchstr, filtertext: string;
   path, startmaximized, backgroundcolor, foregroundcolor: string;
-  fontsize, startpos: integer;
+  fontsize, startpos, listsize: integer;
 
 implementation
 
@@ -164,7 +166,6 @@ begin
     InitialDir := ExtractFilePath(Application.ExeName);
     Filter := 'Text files (*.txt)|*.txt';
   end;
-  listfiles(path, ListView1);
 end;
 
 // Write the default settings in an .ini file if no such file exists.
@@ -179,7 +180,7 @@ begin
     ReWrite(myFile);
     WriteLn(myFile, '[Settings]');
     WriteLn(myFile, 'path=', ExtractFilePath(Application.ExeName) + 'entries\');
-    WriteLn(myFile, 'startmaximized=yes');
+    WriteLn(myFile, 'startmaximized=no');
     WriteLn(myFile, 'backgroundcolor=#101010');
     WriteLn(myFile, 'foregroundcolor=#D6D6D6');
     WriteLn(myFile, 'fontsize=12');
@@ -220,6 +221,8 @@ begin
   MonthCalendar1.calcolors.MonthBackColor := RichEdit1.Color;
   MonthCalendar1.Calcolors.TitleBackColor := RichEdit1.font.color;
   MonthCalendar1.calcolors.TitleTextColor := RichEdit1.Color;
+  StaticText1.color := RichEdit1.font.color;
+  StaticText1.font.color := RichEdit1.color;
   Form1.Font.Color := RichEdit1.Font.Color;
   Form1.Color := RichEdit1.Color;
   appIni.Free;
@@ -257,22 +260,25 @@ begin
   Label1.Width := MonthCalendar1.Width;
   Label1.Height := 15;
   Checkbox2.Top := Checkbox1.Top + 22;
-  Checkbox2.Left := MonthCalendar1.Left + 5;
+  Checkbox2.Left := Checkbox1.Left;
   Label2.Top := Label1.Top + 22;
   Label2.Left := Label1.Left;
   Label2.Width := MonthCalendar1.Width;
   Label2.Height := 15;
-  Edit2.Left := Label2.Left;
+  Edit2.Left := Checkbox2.Left;
   Edit2.Top := Label2.Top + 22;
-  Edit2.Width := MonthCalendar1.Width - 36;
+  Edit2.Width := MonthCalendar1.Width -10;
   if Edit2.Visible = true then
   ListView1.Top := Edit2.Top + 29
   else
   ListView1.Top := Label2.Top + 22;
   ListView1.Left := MonthCalendar1.Left;
   ListView1.Width := MonthCalendar1.Width;
-  ListView1.Columns[0].Width := ListView1.Width - 50;
+  ListView1.Height := RichEdit1.Height - ListView1.Top;
   ListView1.TabStop := False;
+  StaticText1.Top := RichEdit1.Height - 30;
+  StaticText1.Left := ListView1.Left + 10;
+  StaticText1.Width := ListView1.Width - 20;
   if Lowercase(startmaximized) = 'yes' then
     begin
     ShowWindow(handle, SW_MAXIMIZE);
@@ -332,6 +338,7 @@ end;
 procedure TForm1.checkboxclick(Sender: TObject);
 begin
   RichEdit1.Refresh;
+  listsize := 2;
   listfiles(path, ListView1);
 end;
 
@@ -349,7 +356,6 @@ label
 begin
   ListView1.Clear;
   ListView1.ViewStyle := vsReport;
-  ListView1.Column[0].Width := ListView1.Width - 5;
   ListView1.Items.BeginUpdate;
   try
     i := FindFirst(strPath + '*.*', faAnyFile, SearchRec);
@@ -372,8 +378,14 @@ begin
                 goto noshow;
           ListItem := ListView.Items.Insert(0);
           Listitem.Caption := FileInfo.szDisplayName;
+          dec(listsize);
         end;
       end;
+      if (listsize = 1) then
+        begin
+        StaticText1.Visible := true;
+        Break;
+        end;
       noshow:
       i := FindNext(SearchRec);
     end;
@@ -900,6 +912,7 @@ begin
   begin
   filtertext := Edit2.text;
   Edit2.enabled := false;
+  listsize := 62;
   listfiles(path, ListView1);
   end;
 end;
@@ -910,6 +923,14 @@ begin
     Result := true
   else
     Result := false;
+end;
+
+procedure TForm1.Showall(Sender: TObject);
+begin
+  StaticText1.Visible := false;
+  listsize := 0;
+  listfiles(path, ListView1);
+
 end;
 
 end.

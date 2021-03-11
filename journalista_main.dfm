@@ -1,13 +1,13 @@
 object Form1: TForm1
-  Left = 1263
-  Top = 138
+  Left = 1236
+  Top = 163
   AutoScroll = False
   Caption = 'Journalista'
   ClientHeight = 426
   ClientWidth = 638
   Color = clBtnFace
-  Constraints.MinHeight = 300
-  Constraints.MinWidth = 400
+  Constraints.MinHeight = 350
+  Constraints.MinWidth = 500
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -42,25 +42,15 @@ object Form1: TForm1
   object Label2: TLabel
     Left = 445
     Top = 192
-    Width = 193
+    Width = 159
     Height = 13
-    Caption = 'Filter entries containing the text...'
+    Caption = 'Filter entries containing text'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
     Font.Style = [fsBold]
     ParentFont = False
-  end
-  object MonthCalendar1: TMonthCalendar
-    Left = 424
-    Top = 0
-    Width = 201
-    Height = 161
-    Date = 44255.746926793980000000
-    TabOrder = 0
-    WeekNumbers = True
-    OnClick = checkboxclick
   end
   object ListView1: TListView
     Left = 430
@@ -83,6 +73,16 @@ object Form1: TForm1
     ViewStyle = vsReport
     OnResize = ListViewWndProc
     OnSelectItem = select
+  end
+  object MonthCalendar1: TMonthCalendar
+    Left = 424
+    Top = 0
+    Width = 201
+    Height = 161
+    Date = 44255.921583993050000000
+    TabOrder = 0
+    WeekNumbers = True
+    OnClick = checkboxclick
   end
   object StatusBar1: TStatusBar
     Left = 0
@@ -139,14 +139,26 @@ object Form1: TForm1
     OnClick = checkbox2click
   end
   object Edit2: TEdit
-    Left = 445
+    Left = 424
     Top = 208
-    Width = 188
+    Width = 209
     Height = 21
     TabStop = False
     TabOrder = 6
     Visible = False
     OnKeyPress = readfilter
+  end
+  object StaticText1: TStaticText
+    Left = 448
+    Top = 368
+    Width = 169
+    Height = 20
+    Alignment = taCenter
+    AutoSize = False
+    Caption = ' Click here to load the remaining entries'
+    TabOrder = 7
+    Visible = False
+    OnClick = Showall
   end
   object MainMenu1: TMainMenu
     AutoHotkeys = maManual
