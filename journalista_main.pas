@@ -338,7 +338,7 @@ end;
 procedure TForm1.checkboxclick(Sender: TObject);
 begin
   RichEdit1.Refresh;
-  listsize := 2;
+  listsize := 62;
   listfiles(path, ListView1);
 end;
 
