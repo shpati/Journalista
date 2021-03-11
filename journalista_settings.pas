@@ -30,6 +30,7 @@ type
     procedure BitBtn1Click(Sender: TObject);
     procedure fontsizechange(Sender: TObject);
     procedure maxchange(Sender: TObject);
+    procedure browse(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     { Private declarations }
   public
@@ -139,6 +140,12 @@ begin
     appINI.WriteString('Settings', 'startmaximized', 'yes');
   if checkbox1.checked = false then
     appINI.WriteString('Settings', 'startmaximized', 'no');
+end;
+
+procedure TForm2.browse(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  BitBtn1Click(Form2);
 end;
 
 end.

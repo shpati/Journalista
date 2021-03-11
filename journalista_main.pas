@@ -7,7 +7,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ComCtrls, StdCtrls, Menus, ShellApi, StrUtils, Printers, inifiles,
-  Grids;
+  Grids, ExtCtrls;
 
 type
   TRichTextMeasurements = (rtmNone, rtmInches, rtmCentimetres);
@@ -64,6 +64,9 @@ type
     DeleteSelection3: TMenuItem;
     N12: TMenuItem;
     SelectAll3: TMenuItem;
+    CheckBox2: TCheckBox;
+    Label2: TLabel;
+    Edit2: TEdit;
     procedure formCreate(Sender: TObject);
     procedure initialsettings;
     procedure readsettings;
@@ -71,9 +74,10 @@ type
     procedure openfile(fname: string);
     procedure closefile(Sender: TObject);
     procedure savefile;
-    procedure contextmenu(Sender: TObject; MousePos: TPoint;
-              var Handled: Boolean);
+    procedure contextmenu(Sender: TObject; MousePos: TPoint; var Handled: Boolean);
     procedure checkboxclick(Sender: TObject);
+    procedure checkbox2click(Sender: TObject);
+    procedure readfilter(Sender: TObject; var Key: Char);
     procedure listfiles(strPath: string; ListView: TListView);
     procedure ListViewWndProc(Sender: TObject);
     procedure select(Sender: TObject; Item: TListItem; Selected: Boolean);
@@ -82,6 +86,7 @@ type
     procedure countw(Sender: TObject);
     function countwords: string;
     function LoadTextFromFile(const FileName: string): string;
+    function hastext(const FileName: string; searchstr: string): boolean;
     function getdatetime: string;
     function confirmchanges: integer;
     function HtmlToColor(s: string; aDefault: Tcolor): TColor;
@@ -115,7 +120,6 @@ type
     procedure Settings(Sender: TObject);
     procedure About(Sender: TObject);
 
-
   private
     { Private declarations }
   public
@@ -124,7 +128,7 @@ type
 
 var
   Form1: TForm1;
-  lastfile, lasttext, searchstr: string;
+  lastfile, lasttext, searchstr, filtertext: string;
   path, startmaximized, backgroundcolor, foregroundcolor: string;
   fontsize, startpos: integer;
 
@@ -145,12 +149,11 @@ begin
   favoritesfromini;
   MonthCalendar1.Date := now;
   CheckBox1.checked := True;
+  CheckBox2.checked := False;
   lasttext := '';
-  RichEdit1.Text := '';
+  RichEdit1.Text := lasttext;
   New1Click(Form1);
-  listfiles(path, ListView1);
   FindDialog1.Options := [frDown, frHideWholeWord, frHideUpDown];
-
   with OpenDialog1 do begin
     Options := Options + [ofPathMustExist, ofFileMustExist];
     InitialDir := ExtractFilePath(Application.ExeName);
@@ -161,7 +164,7 @@ begin
     InitialDir := ExtractFilePath(Application.ExeName);
     Filter := 'Text files (*.txt)|*.txt';
   end;
-
+  listfiles(path, ListView1);
 end;
 
 // Write the default settings in an .ini file if no such file exists.
@@ -208,6 +211,10 @@ begin
   ListView1.Color := RichEdit1.Color;
   Label1.font.color := RichEdit1.font.Color;
   Label1.Color := RichEdit1.Color;
+  Label2.font.color := RichEdit1.font.Color;
+  Label2.Color := RichEdit1.Color;
+  Edit2.Font.Color := RichEdit1.Color;
+  Edit2.Color := RichEdit1.font.Color;
   MonthCalendar1.calcolors.TextColor := RichEdit1.font.color;
   MonthCalendar1.calcolors.BackColor := RichEdit1.Color;
   MonthCalendar1.calcolors.MonthBackColor := RichEdit1.Color;
@@ -243,13 +250,25 @@ begin
   MonthCalendar1.Width := Abs(divider - rightspacer * 2);
   MonthCalendar1.Height := 160;
   MonthCalendar1.TabStop := False;
-  Checkbox1.Top := 176;
+  Checkbox1.Top := MonthCalendar1.Top * 2 + MonthCalendar1.Height;
   Checkbox1.Left := MonthCalendar1.Left + 5;
-  Label1.Top := 178;
+  Label1.Top := Checkbox1.Top + 2;
   Label1.Left := MonthCalendar1.Left + 23;
   Label1.Width := MonthCalendar1.Width;
   Label1.Height := 15;
-  ListView1.Top := 200;
+  Checkbox2.Top := Checkbox1.Top + 22;
+  Checkbox2.Left := MonthCalendar1.Left + 5;
+  Label2.Top := Label1.Top + 22;
+  Label2.Left := Label1.Left;
+  Label2.Width := MonthCalendar1.Width;
+  Label2.Height := 15;
+  Edit2.Left := Label2.Left;
+  Edit2.Top := Label2.Top + 22;
+  Edit2.Width := MonthCalendar1.Width - 36;
+  if Edit2.Visible = true then
+  ListView1.Top := Edit2.Top + 29
+  else
+  ListView1.Top := Label2.Top + 22;
   ListView1.Left := MonthCalendar1.Left;
   ListView1.Width := MonthCalendar1.Width;
   ListView1.Columns[0].Width := ListView1.Width - 50;
@@ -325,6 +344,8 @@ var
   SearchRec: TSearchRec;
   ListItem: TListItem;
   FileInfo: SHFILEINFO;
+label
+  noshow;
 begin
   ListView1.Clear;
   ListView1.ViewStyle := vsReport;
@@ -342,27 +363,25 @@ begin
           SHGetFileInfo(PChar(strPath + SearchRec.Name), 0, FileInfo,
             SizeOf(FileInfo), SHGFI_DISPLAYNAME);
           if CheckBox1.checked then
-          begin
-            if FormatDateTime('yyyy-mm', MonthCalendar1.Date) =
+            if FormatDateTime('yyyy-mm', MonthCalendar1.Date) <>
               LeftStr(FileInfo.szDisplayName, 7) then
-            begin
-              ListItem := ListView.Items.Insert(0);
-              Listitem.Caption := FileInfo.szDisplayName;
-            end;
-          end
-          else
-          begin
-            ListItem := ListView.Items.Insert(0);
-            Listitem.Caption := FileInfo.szDisplayName;
-          end;
+              goto noshow;
+          if CheckBox2.checked then
+            if filtertext <> '' then
+              if not hastext(path + FileInfo.szDisplayName, filtertext) then
+                goto noshow;
+          ListItem := ListView.Items.Insert(0);
+          Listitem.Caption := FileInfo.szDisplayName;
         end;
       end;
+      noshow:
       i := FindNext(SearchRec);
     end;
   finally
     ListView1.Items.EndUpdate;
     ListView1.SortType := stData;
   end;
+  Edit2.enabled := true;
 end;
 
 // Disables the horizontal scrollbar in listview.
@@ -858,6 +877,39 @@ procedure TForm1.About(Sender: TObject);
 begin
   Application.MessageBox('Journalista 2.0.0 - MIT License' + sLineBreak +
     'Copyright © MMXXI, Shpati Koleka.', 'About Program', 0)
+end;
+
+procedure TForm1.checkbox2click(Sender: TObject);
+begin
+  if checkbox2.Checked = true then
+  begin
+  Edit2.Visible := true;
+  Edit2.Text := '';
+  positioning(Form1);
+  end else
+  begin
+  Edit2.Visible := false;
+  Edit2.Text := '';
+  positioning(Form1);
+  end;
+end;
+
+procedure TForm1.readfilter(Sender: TObject; var Key: Char);
+begin
+  if ord(Key) = VK_RETURN then
+  begin
+  filtertext := Edit2.text;
+  Edit2.enabled := false;
+  listfiles(path, ListView1);
+  end;
+end;
+
+function TForm1.hastext(const FileName: string; searchstr: string): boolean;
+begin
+  if AnsiPos(searchstr, LoadTextFromFile(FileName)) <> 0 then
+    Result := true
+  else
+    Result := false;
 end;
 
 end.

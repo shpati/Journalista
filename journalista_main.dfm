@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 1237
-  Top = 266
+  Left = 1263
+  Top = 138
   AutoScroll = False
   Caption = 'Journalista'
   ClientHeight = 426
@@ -27,11 +27,24 @@ object Form1: TForm1
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
-    Left = 448
+    Left = 445
     Top = 176
-    Width = 190
+    Width = 189
     Height = 13
-    Caption = 'Only entries from selected month:'
+    Caption = 'Filter entries from selected month'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object Label2: TLabel
+    Left = 445
+    Top = 192
+    Width = 193
+    Height = 13
+    Caption = 'Filter entries containing the text...'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -44,16 +57,16 @@ object Form1: TForm1
     Top = 0
     Width = 201
     Height = 161
-    Date = 44255.730124907410000000
+    Date = 44255.746926793980000000
     TabOrder = 0
     WeekNumbers = True
     OnClick = checkboxclick
   end
   object ListView1: TListView
     Left = 430
-    Top = 200
+    Top = 240
     Width = 201
-    Height = 207
+    Height = 167
     Anchors = [akTop, akRight, akBottom]
     BorderStyle = bsNone
     Columns = <
@@ -66,7 +79,7 @@ object Form1: TForm1
     RowSelect = True
     ShowColumnHeaders = False
     SortType = stData
-    TabOrder = 1
+    TabOrder = 2
     ViewStyle = vsReport
     OnResize = ListViewWndProc
     OnSelectItem = select
@@ -84,8 +97,9 @@ object Form1: TForm1
     Top = 176
     Width = 17
     Height = 17
+    TabStop = False
     Caption = 'CheckBox1'
-    TabOrder = 3
+    TabOrder = 4
     OnClick = checkboxclick
   end
   object RichEdit1: TRichEdit
@@ -108,11 +122,31 @@ object Form1: TForm1
     ParentFont = False
     PlainText = True
     ScrollBars = ssVertical
-    TabOrder = 4
+    TabOrder = 1
     WantTabs = True
     OnChange = countw
     OnContextPopup = contextmenu
     OnKeyUp = changes
+  end
+  object CheckBox2: TCheckBox
+    Left = 424
+    Top = 192
+    Width = 17
+    Height = 17
+    TabStop = False
+    Caption = 'CheckBox1'
+    TabOrder = 5
+    OnClick = checkbox2click
+  end
+  object Edit2: TEdit
+    Left = 445
+    Top = 208
+    Width = 188
+    Height = 21
+    TabStop = False
+    TabOrder = 6
+    Visible = False
+    OnKeyPress = readfilter
   end
   object MainMenu1: TMainMenu
     AutoHotkeys = maManual

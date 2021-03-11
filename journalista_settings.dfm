@@ -73,6 +73,7 @@ object Form2: TForm2
     AutoSelect = False
     ReadOnly = True
     TabOrder = 0
+    OnKeyDown = browse
   end
   object BitBtn1: TBitBtn
     Left = 390
