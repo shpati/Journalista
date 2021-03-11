@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 1233
-  Top = 227
+  Left = 1237
+  Top = 266
   AutoScroll = False
   Caption = 'Journalista'
   ClientHeight = 426
@@ -44,7 +44,7 @@ object Form1: TForm1
     Top = 0
     Width = 201
     Height = 161
-    Date = 44255.519381851850000000
+    Date = 44255.730124907410000000
     TabOrder = 0
     WeekNumbers = True
     OnClick = checkboxclick

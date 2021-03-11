@@ -732,6 +732,7 @@ end;
 
 procedure TForm1.ConvertfromUTF81Click(Sender: TObject);
 begin
+  if utf8toansi(RichEdit1.Text) <> '' then
   RichEdit1.text := utf8toansi(RichEdit1.Text);
 end;
 
