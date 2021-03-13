@@ -199,8 +199,8 @@ begin
   appINI := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
   path := appINI.ReadString('Settings', 'path', path);
   if startmaximized <> 'done' then
-  startmaximized := appINI.ReadString('Settings', 'startmaximized',
-    startmaximized);
+    startmaximized := appINI.ReadString('Settings', 'startmaximized',
+      startmaximized);
   backgroundcolor := appINI.ReadString('Settings', 'backgroundcolor',
     backgroundcolor);
   foregroundcolor := appINI.ReadString('Settings', 'foregroundcolor',
@@ -236,10 +236,8 @@ end;
 procedure TForm1.positioning(Sender: TObject);
 
 var
-  divider: word;
-  rightspacer: word;
+  rightspacer: integer;
 begin
-  divider := 260;
   rightspacer := 20;
   RichEdit1.Left := 0;
   RichEdit1.Top := 0;
@@ -252,7 +250,7 @@ begin
   MonthCalendar1.Left := RichEdit1.Left + RichEdit1.Width + rightspacer;
   MonthCalendar1.Height := 160;
   MonthCalendar1.TabStop := False;
-  Checkbox1.Top := MonthCalendar1.Top * 2 + MonthCalendar1.Height;
+  Checkbox1.Top := MonthCalendar1.Top + MonthCalendar1.Height + 10;
   Checkbox1.Left := MonthCalendar1.Left;
   Label1.Top := Checkbox1.Top + 2;
   Label1.Left := Checkbox1.Left + 18;
@@ -266,11 +264,11 @@ begin
   Label2.Height := 15;
   Edit2.Left := Checkbox2.Left;
   Edit2.Top := Label2.Top + 22;
-  Edit2.Width := MonthCalendar1.Width -10;
+  Edit2.Width := MonthCalendar1.Width - 10;
   if Edit2.Visible = true then
-  ListView1.Top := Edit2.Top + 29
+    ListView1.Top := Edit2.Top + 29
   else
-  ListView1.Top := Label2.Top + 22;
+    ListView1.Top := Label2.Top + 22;
   ListView1.Left := Checkbox1.Left - 5;
   ListView1.Width := StatusBar1.Width - ListView1.Left;
   ListView1.Column[0].Width := MonthCalendar1.Width;
@@ -280,10 +278,10 @@ begin
   StaticText1.Left := ListView1.Left + 5;
   StaticText1.Width := ListView1.Width - 35;
   if Lowercase(startmaximized) = 'yes' then
-    begin
+  begin
     ShowWindow(handle, SW_MAXIMIZE);
     startmaximized := 'done';
-    end;
+  end;
 end;
 
 // Display the content of a file in the text editor
@@ -330,7 +328,7 @@ end;
 procedure TForm1.contextmenu(Sender: TObject; MousePos: TPoint;
   var Handled: Boolean);
 begin
-  PopupMenu1.Popup(Mouse.CursorPos.X,Mouse.CursorPos.Y);
+  PopupMenu1.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
 end;
 
 // Option to view all files or just the entries of the current month.
@@ -347,16 +345,16 @@ procedure TForm1.checkbox2click(Sender: TObject);
 begin
   if checkbox2.Checked = true then
   begin
-  Edit2.Visible := true;
-  Edit2.Text := '';
-  filtertext := '';
-  positioning(Form1);
+    Edit2.Visible := true;
+    Edit2.Text := '';
+    filtertext := '';
+    positioning(Form1);
   end else
   begin
-  Edit2.Visible := false;
-  Edit2.Text := '';
-  filtertext := '';
-  positioning(Form1);
+    Edit2.Visible := false;
+    Edit2.Text := '';
+    filtertext := '';
+    positioning(Form1);
   end;
 end;
 
@@ -366,9 +364,9 @@ procedure TForm1.readfilter(Sender: TObject; var Key: Char);
 begin
   if ord(Key) = VK_RETURN then
   begin
-  filtertext := Edit2.text;
-  Edit2.enabled := false;
-  listfiles(path, ListView1);
+    filtertext := Edit2.text;
+    Edit2.enabled := false;
+    listfiles(path, ListView1);
   end;
 end;
 
@@ -414,8 +412,8 @@ begin
     end;
     if (j > listsize) then
     begin
-    StaticText1.Visible := true;
-    listsize := 1000000;
+      StaticText1.Visible := true;
+      listsize := 1000000;
     end;
   finally
     ListView1.Items.EndUpdate;
@@ -809,7 +807,7 @@ end;
 procedure TForm1.ConvertfromUTF81Click(Sender: TObject);
 begin
   if utf8toansi(RichEdit1.Text) <> '' then
-  RichEdit1.text := utf8toansi(RichEdit1.Text);
+    RichEdit1.text := utf8toansi(RichEdit1.Text);
 end;
 
 procedure TForm1.Addfiletofavorites1Click(Sender: TObject);
