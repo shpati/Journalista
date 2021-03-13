@@ -243,21 +243,19 @@ begin
   rightspacer := 20;
   RichEdit1.Left := 0;
   RichEdit1.Top := 0;
-  RichEdit1.Width := Abs(Form1.Width - divider + 10);
-
+  RichEdit1.Width := StatusBar1.Width - MonthCalendar1.Width - 2 * rightspacer;
   with RichEdit1 do
     PageRect := Rect(15, 15, 12, 15);
   RichEdit1.Refresh;
   RichEdit1.TabStop := False;
   MonthCalendar1.Top := 5;
-  MonthCalendar1.Left := Abs(Form1.Width - divider + rightspacer);
-  MonthCalendar1.Width := Abs(divider - rightspacer * 2);
+  MonthCalendar1.Left := RichEdit1.Left + RichEdit1.Width + rightspacer;
   MonthCalendar1.Height := 160;
   MonthCalendar1.TabStop := False;
   Checkbox1.Top := MonthCalendar1.Top * 2 + MonthCalendar1.Height;
-  Checkbox1.Left := MonthCalendar1.Left + 5;
+  Checkbox1.Left := MonthCalendar1.Left;
   Label1.Top := Checkbox1.Top + 2;
-  Label1.Left := MonthCalendar1.Left + 23;
+  Label1.Left := Checkbox1.Left + 18;
   Label1.Width := MonthCalendar1.Width;
   Label1.Height := 15;
   Checkbox2.Top := Checkbox1.Top + 22;
@@ -273,8 +271,9 @@ begin
   ListView1.Top := Edit2.Top + 29
   else
   ListView1.Top := Label2.Top + 22;
-  ListView1.Left := MonthCalendar1.Left;
+  ListView1.Left := Checkbox1.Left - 5;
   ListView1.Width := StatusBar1.Width - ListView1.Left;
+  ListView1.Column[0].Width := MonthCalendar1.Width;
   ListView1.Height := RichEdit1.Height - ListView1.Top;
   ListView1.TabStop := False;
   StaticText1.Top := RichEdit1.Height - 85;
