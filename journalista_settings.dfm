@@ -17,14 +17,14 @@ object Form2: TForm2
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
-    Left = 8
+    Left = 10
     Top = 10
     Width = 124
     Height = 13
     Caption = 'Path of Journalista entries:'
   end
   object Label2: TLabel
-    Left = 8
+    Left = 10
     Top = 66
     Width = 81
     Height = 13
@@ -38,7 +38,7 @@ object Form2: TForm2
     Caption = 'Background Color'
   end
   object Shape1: TShape
-    Left = 96
+    Left = 98
     Top = 62
     Width = 25
     Height = 21
@@ -52,21 +52,21 @@ object Form2: TForm2
     OnMouseDown = backcolor
   end
   object Label4: TLabel
-    Left = 284
+    Left = 286
     Top = 66
     Width = 44
     Height = 13
     Caption = 'Font Size'
   end
   object Label5: TLabel
-    Left = 266
+    Left = 268
     Top = 10
     Width = 116
     Height = 13
     Caption = 'Start Program Maximized'
   end
   object Edit1: TEdit
-    Left = 8
+    Left = 10
     Top = 28
     Width = 377
     Height = 21
@@ -76,7 +76,7 @@ object Form2: TForm2
     OnKeyDown = browse
   end
   object ComboBox1: TComboBox
-    Left = 336
+    Left = 338
     Top = 62
     Width = 49
     Height = 21
@@ -105,7 +105,7 @@ object Form2: TForm2
       '48')
   end
   object CheckBox1: TCheckBox
-    Left = 248
+    Left = 250
     Top = 8
     Width = 17
     Height = 17
@@ -114,11 +114,11 @@ object Form2: TForm2
     OnClick = maxchange
   end
   object Button1: TButton
-    Left = 390
+    Left = 392
     Top = 28
     Width = 67
-    Height = 23
-    Caption = 'Button1'
+    Height = 21
+    Caption = 'Browse...'
     TabOrder = 3
     OnClick = Button1click
   end

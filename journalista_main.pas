@@ -274,7 +274,7 @@ begin
   else
   ListView1.Top := Label2.Top + 22;
   ListView1.Left := MonthCalendar1.Left;
-  ListView1.Width := MonthCalendar1.Width;
+  ListView1.Width := StatusBar1.Width - ListView1.Left;
   ListView1.Height := RichEdit1.Height - ListView1.Top;
   ListView1.TabStop := False;
   StaticText1.Top := RichEdit1.Height - 85;

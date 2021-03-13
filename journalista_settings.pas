@@ -60,7 +60,7 @@ begin
   Shape1.Brush.Color := Form1.HtmlToColor(foregroundcolor, $D6D6D6);
   Shape2.Brush.Color := Form1.HtmlToColor(backgroundcolor, $101010);
   Combobox1.Text := inttostr(fontsize);
-  Button1.Width := Form2.Width - Button1.Left - 20;
+  Button1.Width := Form2.Width - Button1.Left - 14;
   if Lowercase(appINI.ReadString('Settings', 'startmaximized', startmaximized))
     = 'yes' then checkbox1.checked := true;
 end;

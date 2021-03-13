@@ -42,9 +42,9 @@ object Form1: TForm1
   object Label2: TLabel
     Left = 445
     Top = 192
-    Width = 162
+    Width = 171
     Height = 13
-    Caption = 'Filter shown entries containing text'
+    Caption = 'Filter shown entries containing text...'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -79,7 +79,7 @@ object Form1: TForm1
     Top = 0
     Width = 201
     Height = 161
-    Date = 44255.556936041670000000
+    Date = 44255.570778518520000000
     TabOrder = 0
     WeekNumbers = True
     OnClick = checkboxclick
