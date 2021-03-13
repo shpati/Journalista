@@ -1,6 +1,6 @@
 object Form2: TForm2
-  Left = 826
-  Top = 546
+  Left = 1426
+  Top = 597
   BorderStyle = bsDialog
   Caption = 'Settings'
   ClientHeight = 98
@@ -75,22 +75,13 @@ object Form2: TForm2
     TabOrder = 0
     OnKeyDown = browse
   end
-  object BitBtn1: TBitBtn
-    Left = 390
-    Top = 28
-    Width = 67
-    Height = 23
-    Caption = 'Browse'
-    TabOrder = 1
-    OnClick = BitBtn1Click
-  end
   object ComboBox1: TComboBox
     Left = 336
     Top = 62
     Width = 49
     Height = 21
     ItemHeight = 13
-    TabOrder = 2
+    TabOrder = 1
     OnChange = fontsizechange
     Items.Strings = (
       '8'
@@ -119,8 +110,17 @@ object Form2: TForm2
     Width = 17
     Height = 17
     Caption = 'CheckBox1'
-    TabOrder = 3
+    TabOrder = 2
     OnClick = maxchange
+  end
+  object Button1: TButton
+    Left = 390
+    Top = 28
+    Width = 67
+    Height = 23
+    Caption = 'Button1'
+    TabOrder = 3
+    OnClick = Button1click
   end
   object ColorDialog1: TColorDialog
     Left = 416

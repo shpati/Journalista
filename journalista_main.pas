@@ -80,6 +80,7 @@ type
     procedure checkbox2click(Sender: TObject);
     procedure readfilter(Sender: TObject; var Key: Char);
     procedure listfiles(strPath: string; ListView: TListView);
+    procedure hidewarning(Sender: TObject);
     procedure ListViewWndProc(Sender: TObject);
     procedure select(Sender: TObject; Item: TListItem; Selected: Boolean);
     procedure onformclose(Sender: TObject; var CanClose: Boolean);
@@ -120,7 +121,6 @@ type
     procedure favoritesfromini;
     procedure Settings(Sender: TObject);
     procedure About(Sender: TObject);
-    procedure Showall(Sender: TObject);
 
   private
     { Private declarations }
@@ -146,6 +146,7 @@ procedure TForm1.formcreate(Sender: TObject);
 begin
   Form1.Width := round(Screen.WorkAreaWidth * 0.6);
   Form1.Height := round(Screen.WorkAreaHeight * 0.6);
+  listsize := 3650;
   initialsettings;
   readsettings;
   favoritesfromini;
@@ -276,9 +277,9 @@ begin
   ListView1.Width := MonthCalendar1.Width;
   ListView1.Height := RichEdit1.Height - ListView1.Top;
   ListView1.TabStop := False;
-  StaticText1.Top := RichEdit1.Height - 30;
-  StaticText1.Left := ListView1.Left + 10;
-  StaticText1.Width := ListView1.Width - 20;
+  StaticText1.Top := RichEdit1.Height - 85;
+  StaticText1.Left := ListView1.Left + 5;
+  StaticText1.Width := ListView1.Width - 35;
   if Lowercase(startmaximized) = 'yes' then
     begin
     ShowWindow(handle, SW_MAXIMIZE);
@@ -338,8 +339,38 @@ end;
 procedure TForm1.checkboxclick(Sender: TObject);
 begin
   RichEdit1.Refresh;
-  listsize := 62;
   listfiles(path, ListView1);
+end;
+
+// Option to view all files containing a given text string.
+
+procedure TForm1.checkbox2click(Sender: TObject);
+begin
+  if checkbox2.Checked = true then
+  begin
+  Edit2.Visible := true;
+  Edit2.Text := '';
+  filtertext := '';
+  positioning(Form1);
+  end else
+  begin
+  Edit2.Visible := false;
+  Edit2.Text := '';
+  filtertext := '';
+  positioning(Form1);
+  end;
+end;
+
+// Apply text string filter
+
+procedure TForm1.readfilter(Sender: TObject; var Key: Char);
+begin
+  if ord(Key) = VK_RETURN then
+  begin
+  filtertext := Edit2.text;
+  Edit2.enabled := false;
+  listfiles(path, ListView1);
+  end;
 end;
 
 // Lists the files in listview. If the checkbox is enabled, it filters them.
@@ -347,13 +378,13 @@ end;
 procedure TForm1.listfiles(strPath: string; ListView: TListView);
 
 var
-  i: Integer;
+  i, j: Integer;
   SearchRec: TSearchRec;
   ListItem: TListItem;
-  FileInfo: SHFILEINFO;
 label
   noshow;
 begin
+  j := 0;
   ListView1.Clear;
   ListView1.ViewStyle := vsReport;
   ListView1.Items.BeginUpdate;
@@ -363,37 +394,42 @@ begin
     begin
       with ListView do
       begin
+        inc(j);
         if ((SearchRec.Attr and FaDirectory <> FaDirectory) and
           (SearchRec.Attr and FaVolumeId <> FaVolumeID)) then
         begin
-          SHGetFileInfo(PChar(strPath + SearchRec.Name), 0, FileInfo,
-            SizeOf(FileInfo), SHGFI_DISPLAYNAME);
           if CheckBox1.checked then
             if FormatDateTime('yyyy-mm', MonthCalendar1.Date) <>
-              LeftStr(FileInfo.szDisplayName, 7) then
+              LeftStr(SearchRec.Name, 7) then
               goto noshow;
           if CheckBox2.checked then
             if filtertext <> '' then
-              if not hastext(path + FileInfo.szDisplayName, filtertext) then
+              if not hastext(path + SearchRec.Name, filtertext) then
                 goto noshow;
           ListItem := ListView.Items.Insert(0);
-          Listitem.Caption := FileInfo.szDisplayName;
-          dec(listsize);
+          Listitem.Caption := SearchRec.Name;
         end;
       end;
-      if (listsize = 1) then
-        begin
-        StaticText1.Visible := true;
-        Break;
-        end;
       noshow:
       i := FindNext(SearchRec);
+    end;
+    if (j > listsize) then
+    begin
+    StaticText1.Visible := true;
+    listsize := 1000000;
     end;
   finally
     ListView1.Items.EndUpdate;
     ListView1.SortType := stData;
   end;
   Edit2.enabled := true;
+end;
+
+// Hides the 'too many entries' warning.
+
+procedure TForm1.hidewarning(Sender: TObject);
+begin
+  StaticText1.visible := false;
 end;
 
 // Disables the horizontal scrollbar in listview.
@@ -473,6 +509,16 @@ begin
   finally
     SL.Free;
   end;
+end;
+
+// Confirm if text loaded from file contains a given text string.
+
+function TForm1.hastext(const FileName: string; searchstr: string): boolean;
+begin
+  if AnsiPos(searchstr, LoadTextFromFile(FileName)) <> 0 then
+    Result := true
+  else
+    Result := false;
 end;
 
 // Converts the date in the format given below.
@@ -578,7 +624,7 @@ begin
   Result := True;
 end;
 
-// Menu activated procedures
+// Menu-activated procedures
 
 procedure TForm1.New1Click(Sender: TObject);
 begin
@@ -889,48 +935,6 @@ procedure TForm1.About(Sender: TObject);
 begin
   Application.MessageBox('Journalista 2.0.0 - MIT License' + sLineBreak +
     'Copyright © MMXXI, Shpati Koleka.', 'About Program', 0)
-end;
-
-procedure TForm1.checkbox2click(Sender: TObject);
-begin
-  if checkbox2.Checked = true then
-  begin
-  Edit2.Visible := true;
-  Edit2.Text := '';
-  positioning(Form1);
-  end else
-  begin
-  Edit2.Visible := false;
-  Edit2.Text := '';
-  positioning(Form1);
-  end;
-end;
-
-procedure TForm1.readfilter(Sender: TObject; var Key: Char);
-begin
-  if ord(Key) = VK_RETURN then
-  begin
-  filtertext := Edit2.text;
-  Edit2.enabled := false;
-  listsize := 62;
-  listfiles(path, ListView1);
-  end;
-end;
-
-function TForm1.hastext(const FileName: string; searchstr: string): boolean;
-begin
-  if AnsiPos(searchstr, LoadTextFromFile(FileName)) <> 0 then
-    Result := true
-  else
-    Result := false;
-end;
-
-procedure TForm1.Showall(Sender: TObject);
-begin
-  StaticText1.Visible := false;
-  listsize := 0;
-  listfiles(path, ListView1);
-
 end;
 
 end.

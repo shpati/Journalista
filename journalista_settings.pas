@@ -17,20 +17,21 @@ type
     ColorDialog1: TColorDialog;
     Shape1: TShape;
     Shape2: TShape;
-    BitBtn1: TBitBtn;
     Label4: TLabel;
     ComboBox1: TComboBox;
     Label5: TLabel;
     CheckBox1: TCheckBox;
+    Button1: TButton;
     procedure load(Sender: TObject);
     procedure forecolor(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure backcolor(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
-    procedure BitBtn1Click(Sender: TObject);
+    procedure Button1click(Sender: TObject);
     procedure fontsizechange(Sender: TObject);
     procedure maxchange(Sender: TObject);
     procedure browse(Sender: TObject; var Key: Word; Shift: TShiftState);
+
   private
     { Private declarations }
   public
@@ -59,7 +60,7 @@ begin
   Shape1.Brush.Color := Form1.HtmlToColor(foregroundcolor, $D6D6D6);
   Shape2.Brush.Color := Form1.HtmlToColor(backgroundcolor, $101010);
   Combobox1.Text := inttostr(fontsize);
-  BitBtn1.Width := Form2.Width - BitBtn1.Left - 20;
+  Button1.Width := Form2.Width - Button1.Left - 20;
   if Lowercase(appINI.ReadString('Settings', 'startmaximized', startmaximized))
     = 'yes' then checkbox1.checked := true;
 end;
@@ -104,7 +105,7 @@ end;
 
 // Select the directory to store the journal entries.
 
-procedure TForm2.BitBtn1Click(Sender: TObject);
+procedure TForm2.Button1click(Sender: TObject);
 var
   appINI: TIniFile;
 begin
@@ -115,6 +116,7 @@ begin
   Edit1.text := path;
   Form1.listfiles(path, Form1.ListView1);
   Form1.readsettings;
+
 end;
 
 // Change the size of the font, the font type is Courier New.
@@ -145,7 +147,7 @@ end;
 procedure TForm2.browse(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  BitBtn1Click(Form2);
+  Button1Click(Form2);
 end;
 
 end.

@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 1236
-  Top = 163
+  Left = 1229
+  Top = 142
   AutoScroll = False
   Caption = 'Journalista'
   ClientHeight = 426
@@ -29,27 +29,27 @@ object Form1: TForm1
   object Label1: TLabel
     Left = 445
     Top = 176
-    Width = 189
+    Width = 154
     Height = 13
     Caption = 'Filter entries from selected month'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object Label2: TLabel
     Left = 445
     Top = 192
-    Width = 159
+    Width = 162
     Height = 13
-    Caption = 'Filter entries containing text'
+    Caption = 'Filter shown entries containing text'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object ListView1: TListView
@@ -79,7 +79,7 @@ object Form1: TForm1
     Top = 0
     Width = 201
     Height = 161
-    Date = 44255.921583993050000000
+    Date = 44255.556936041670000000
     TabOrder = 0
     WeekNumbers = True
     OnClick = checkboxclick
@@ -149,16 +149,19 @@ object Form1: TForm1
     OnKeyPress = readfilter
   end
   object StaticText1: TStaticText
-    Left = 448
-    Top = 368
-    Width = 169
-    Height = 20
+    Left = 440
+    Top = 320
+    Width = 185
+    Height = 70
     Alignment = taCenter
     AutoSize = False
-    Caption = ' Click here to load the remaining entries'
+    Caption = 
+      'A very large number of entries was'#13#10'found in the entries folder,' +
+      ' slowing'#13#10'down the program. Please consider'#13#10'moving the older or' +
+      ' less used entries'#13#10'to a subfolder within the entries folder.'
     TabOrder = 7
     Visible = False
-    OnClick = Showall
+    OnClick = hidewarning
   end
   object MainMenu1: TMainMenu
     AutoHotkeys = maManual
