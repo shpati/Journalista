@@ -83,6 +83,7 @@ type
     procedure hidewarning(Sender: TObject);
     procedure ListViewWndProc(Sender: TObject);
     procedure select(Sender: TObject; Item: TListItem; Selected: Boolean);
+    procedure listkey(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure onformclose(Sender: TObject; var CanClose: Boolean);
     procedure changes(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure countw(Sender: TObject);
@@ -121,6 +122,7 @@ type
     procedure favoritesfromini;
     procedure Settings(Sender: TObject);
     procedure About(Sender: TObject);
+
 
   private
     { Private declarations }
@@ -440,9 +442,21 @@ end;
 
 procedure TForm1.select(Sender: TObject; Item: TListItem;
   Selected: Boolean);
+var
+  txt: string;
 begin
   if Assigned(ListView1.Selected) then
     openfile(path + ListView1.Selected.Caption);
+end;
+
+// If Delete key is pressed while a list item is selected.
+
+procedure TForm1.listkey(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key = VK_DELETE then
+    if not AnsiContainsText(Form1.Caption, '(not saved)') then
+      Delete1Click(Form1);
 end;
 
 // Checks if the file has changed before exiting the program.
@@ -537,7 +551,10 @@ begin
       + Lastfile + '?', mtCustom, [mbYes, mbNo, mbCancel], 0);
     if buttonSelected = mrYes then savefile;
     if buttonSelected = mrNo then Result := mrNo;
-    if buttonSelected = mrCancel then Result := mrCancel;
+    if buttonSelected = mrCancel then
+    begin
+      Result := mrCancel;
+    end;
   end
   else
     Result := mrNo;
@@ -711,8 +728,9 @@ procedure TForm1.Delete1Click(Sender: TObject);
 var
   buttonSelected: integer;
 begin
-  buttonSelected := MessageDlg('Do you want to delete '
-    + Lastfile + '?', mtCustom, [mbYes, mbNo], 0);
+  if lastfile <> '' then
+    buttonSelected := MessageDlg('Do you want to delete '
+      + Lastfile + '?', mtCustom, [mbYes, mbNo], 0);
   if buttonSelected = mrYes then
   begin
     if DeleteFile(lastfile) then ShowMessage(lastfile + ' deleted.');
@@ -720,6 +738,7 @@ begin
     RichEdit1.Text := '';
     RichEdit1.Visible := false;
     lasttext := '';
+    lastfile := '';
   end;
   listfiles(path, ListView1);
 end;

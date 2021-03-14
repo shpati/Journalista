@@ -71,6 +71,7 @@ object Form1: TForm1
     SortType = stData
     TabOrder = 2
     ViewStyle = vsReport
+    OnKeyDown = listkey
     OnResize = ListViewWndProc
     OnSelectItem = select
   end
@@ -79,7 +80,7 @@ object Form1: TForm1
     Top = 0
     Width = 201
     Height = 161
-    Date = 44255.379210347220000000
+    Date = 44255.554481840280000000
     TabOrder = 0
     WeekNumbers = True
     OnClick = checkboxclick
@@ -205,6 +206,7 @@ object Form1: TForm1
       end
       object Delete1: TMenuItem
         Caption = '&Delete File'
+        ShortCut = 16452
         OnClick = Delete1Click
       end
       object N2: TMenuItem
