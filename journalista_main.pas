@@ -255,20 +255,20 @@ begin
   Label1.Top := Checkbox1.Top + 2;
   Label1.Left := Checkbox1.Left + 18;
   Label1.Width := MonthCalendar1.Width;
-  Label1.Height := 15;
-  Checkbox2.Top := Checkbox1.Top + 22;
+  Label1.Height := 25;
+  Checkbox2.Top := Checkbox1.Top + 25;
   Checkbox2.Left := Checkbox1.Left;
-  Label2.Top := Label1.Top + 22;
+  Label2.Top := Checkbox2.Top + 2;
   Label2.Left := Label1.Left;
   Label2.Width := MonthCalendar1.Width;
-  Label2.Height := 15;
+  Label2.Height := 25;
   Edit2.Left := Checkbox2.Left;
-  Edit2.Top := Label2.Top + 22;
+  Edit2.Top := Label2.Top + 25;
   Edit2.Width := MonthCalendar1.Width - 10;
   if Edit2.Visible = true then
-    ListView1.Top := Edit2.Top + 29
+    ListView1.Top := Edit2.Top + 30
   else
-    ListView1.Top := Label2.Top + 22;
+    ListView1.Top := Label2.Top + 25;
   ListView1.Left := Checkbox1.Left - 5;
   ListView1.Width := StatusBar1.Width - ListView1.Left;
   ListView1.Column[0].Width := MonthCalendar1.Width;

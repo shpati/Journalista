@@ -79,7 +79,7 @@ object Form1: TForm1
     Top = 0
     Width = 201
     Height = 161
-    Date = 44255.570778518520000000
+    Date = 44255.379210347220000000
     TabOrder = 0
     WeekNumbers = True
     OnClick = checkboxclick
@@ -152,13 +152,13 @@ object Form1: TForm1
     Left = 440
     Top = 320
     Width = 185
-    Height = 70
+    Height = 73
     Alignment = taCenter
     AutoSize = False
     Caption = 
-      'A very large number of entries was'#13#10'found in the entries folder,' +
-      ' slowing'#13#10'down the program. Please consider'#13#10'moving the older or' +
-      ' less used entries'#13#10'to a subfolder within the entries folder.'
+      'A very large number of entries was found in the entries folder, ' +
+      'slowing down the program. Please consider moving the older or le' +
+      'ss used entries to a subfolder within the entries folder.'
     TabOrder = 7
     Visible = False
     OnClick = hidewarning
