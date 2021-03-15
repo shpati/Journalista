@@ -66,7 +66,6 @@ object Form1: TForm1
     ColumnClick = False
     HideSelection = False
     ReadOnly = True
-    RowSelect = True
     ShowColumnHeaders = False
     SortType = stData
     TabOrder = 2
@@ -80,7 +79,7 @@ object Form1: TForm1
     Top = 0
     Width = 201
     Height = 161
-    Date = 44255.554481840280000000
+    Date = 44255.545027256940000000
     TabOrder = 0
     WeekNumbers = True
     OnClick = checkboxclick

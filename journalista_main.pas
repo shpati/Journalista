@@ -255,7 +255,7 @@ begin
   Checkbox1.Top := MonthCalendar1.Top + MonthCalendar1.Height + 10;
   Checkbox1.Left := MonthCalendar1.Left;
   Label1.Top := Checkbox1.Top + 2;
-  Label1.Left := Checkbox1.Left + 18;
+  Label1.Left := Checkbox1.Left + 20;
   Label1.Width := MonthCalendar1.Width;
   Label1.Height := 25;
   Checkbox2.Top := Checkbox1.Top + 25;
@@ -273,7 +273,6 @@ begin
     ListView1.Top := Label2.Top + 25;
   ListView1.Left := Checkbox1.Left - 5;
   ListView1.Width := StatusBar1.Width - ListView1.Left;
-  ListView1.Column[0].Width := MonthCalendar1.Width;
   ListView1.Height := RichEdit1.Height - ListView1.Top;
   ListView1.TabStop := False;
   StaticText1.Top := RichEdit1.Height - 85;
