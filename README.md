@@ -1,6 +1,8 @@
 # Journalista
 Journalista is a handy program for keeping journals, diary entries, or other text notes. 
 
+![Journalista](Journalista.png "Journalista")
+
 Some of the program features are:
 
 -	Simple and distraction-free text editor. No unnecessary bells and whistles, so you can focus on your writing instead. 
