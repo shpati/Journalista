@@ -22,6 +22,8 @@ type
     Label5: TLabel;
     CheckBox1: TCheckBox;
     Button1: TButton;
+    Label6: TLabel;
+    CheckBox2: TCheckBox;
     procedure load(Sender: TObject);
     procedure forecolor(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
@@ -31,6 +33,7 @@ type
     procedure fontsizechange(Sender: TObject);
     procedure maxchange(Sender: TObject);
     procedure browse(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure minchange(Sender: TObject);
 
   private
     { Private declarations }
@@ -63,6 +66,8 @@ begin
   Button1.Width := Form2.Width - Button1.Left - 14;
   if Lowercase(appINI.ReadString('Settings', 'startmaximized', startmaximized))
     = 'yes' then checkbox1.checked := true;
+  if Lowercase(appINI.ReadString('Settings', 'minimizetotray', startmaximized))
+    = 'yes' then checkbox2.checked := true;
 end;
 
 // Select the foreground color.
@@ -82,6 +87,7 @@ begin
   foregroundcolor := Form1.ColorToHtml(Shape1.Brush.Color);
   appINI.WriteString('Settings', 'foregroundcolor', foregroundcolor);
   Form1.readsettings;
+  Form2.Edit1.SetFocus;
 end;
 
 // Select the background color.
@@ -101,6 +107,7 @@ begin
   backgroundcolor := Form1.ColorToHtml(Shape2.Brush.Color);
   appINI.WriteString('Settings', 'backgroundcolor', backgroundcolor);
   Form1.readsettings;
+  Form2.Edit1.SetFocus;
 end;
 
 // Select the directory to store the journal entries.
@@ -116,7 +123,7 @@ begin
   Edit1.text := path;
   Form1.listfiles(path, Form1.ListView1);
   Form1.readsettings;
-
+  Form2.Edit1.SetFocus;
 end;
 
 // Change the size of the font, the font type is Courier New.
@@ -129,6 +136,7 @@ begin
   fontsize := strtoint(combobox1.text);
   appINI.WriteInteger('Settings', 'fontsize', fontsize);
   Form1.readsettings;
+  Form2.Edit1.SetFocus;
 end;
 
 // Option to maximize program window on program start.
@@ -142,12 +150,31 @@ begin
     appINI.WriteString('Settings', 'startmaximized', 'yes');
   if checkbox1.checked = false then
     appINI.WriteString('Settings', 'startmaximized', 'no');
+  Form2.Edit1.SetFocus;
 end;
 
 procedure TForm2.browse(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  Button1Click(Form2);
+  if (ord(Key)=27) then Close else Button1Click(Form2);
+end;
+
+procedure TForm2.minchange(Sender: TObject);
+var
+  appINI: TIniFile;
+begin
+  appINI := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+  if checkbox2.checked = true then
+    begin
+    minimizetotray := 'yes';
+    appINI.WriteString('Settings', 'minimizetotray', 'yes');
+    end;
+  if checkbox2.checked = false then
+    begin
+    minimizetotray := 'no';
+    appINI.WriteString('Settings', 'minimizetotray', 'no');
+    end;
+  Form2.Edit1.SetFocus;
 end;
 
 end.

@@ -1,6 +1,6 @@
 object Form2: TForm2
-  Left = 1426
-  Top = 597
+  Left = 734
+  Top = 754
   BorderStyle = bsDialog
   Caption = 'Settings'
   ClientHeight = 98
@@ -59,11 +59,18 @@ object Form2: TForm2
     Caption = 'Font Size'
   end
   object Label5: TLabel
-    Left = 268
+    Left = 180
     Top = 10
     Width = 116
     Height = 13
     Caption = 'Start Program Maximized'
+  end
+  object Label6: TLabel
+    Left = 340
+    Top = 10
+    Width = 118
+    Height = 13
+    Caption = 'Minimize Program to Tray'
   end
   object Edit1: TEdit
     Left = 10
@@ -105,7 +112,7 @@ object Form2: TForm2
       '48')
   end
   object CheckBox1: TCheckBox
-    Left = 250
+    Left = 162
     Top = 8
     Width = 17
     Height = 17
@@ -121,6 +128,15 @@ object Form2: TForm2
     Caption = 'Browse...'
     TabOrder = 3
     OnClick = Button1click
+  end
+  object CheckBox2: TCheckBox
+    Left = 320
+    Top = 8
+    Width = 17
+    Height = 17
+    Caption = 'CheckBox2'
+    TabOrder = 4
+    OnClick = minchange
   end
   object ColorDialog1: TColorDialog
     Left = 416

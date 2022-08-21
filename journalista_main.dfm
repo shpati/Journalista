@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 1229
-  Top = 142
+  Left = 1121
+  Top = 141
   AutoScroll = False
   Caption = 'Journalista'
   ClientHeight = 426
@@ -79,7 +79,7 @@ object Form1: TForm1
     Top = 0
     Width = 201
     Height = 161
-    Date = 44255.545027256940000000
+    Date = 44255.740264594910000000
     TabOrder = 0
     WeekNumbers = True
     OnClick = checkboxclick
@@ -348,5 +348,24 @@ object Form1: TForm1
       ShortCut = 16449
       OnClick = SelectAll1Click
     end
+  end
+  object PopupMenu2: TPopupMenu
+    Left = 240
+    object About3: TMenuItem
+      Caption = 'About'
+      OnClick = About
+    end
+    object ShowProgram1: TMenuItem
+      Caption = 'Show Program'
+      OnClick = ShowClick
+    end
+    object ExitProgram1: TMenuItem
+      Caption = 'Exit Program'
+      OnClick = exit
+    end
+  end
+  object ApplicationEvents1: TApplicationEvents
+    OnMinimize = formhide
+    Left = 272
   end
 end

@@ -7,7 +7,9 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ComCtrls, StdCtrls, Menus, ShellApi, StrUtils, Printers, inifiles,
-  Grids, ExtCtrls;
+  Grids, ExtCtrls, AppEvnts;
+
+const WM_ICONTRAY = WM_USER + 1;
 
 type
   TRichTextMeasurements = (rtmNone, rtmInches, rtmCentimetres);
@@ -68,7 +70,15 @@ type
     Label2: TLabel;
     Edit2: TEdit;
     StaticText1: TStaticText;
+    PopupMenu2: TPopupMenu;
+    About3: TMenuItem;
+    ShowProgram1: TMenuItem;
+    ExitProgram1: TMenuItem;
+    ApplicationEvents1: TApplicationEvents;
     procedure formCreate(Sender: TObject);
+    procedure formhide(Sender: TObject);
+    procedure hideit(Sender: TObject; var Action: TCloseAction);
+    procedure TrayMessage(var Msg: TMessage); message WM_ICONTRAY;
     procedure initialsettings;
     procedure readsettings;
     procedure positioning(Sender: TObject);
@@ -122,19 +132,20 @@ type
     procedure favoritesfromini;
     procedure Settings(Sender: TObject);
     procedure About(Sender: TObject);
-
+    procedure ShowClick(Sender: TObject);
 
   private
-    { Private declarations }
+    TrayIconData: TNotifyIconData;
   public
     { Public declarations }
   end;
 
 var
   Form1: TForm1;
-  lastfile, lasttext, searchstr, filtertext: string;
-  path, startmaximized, backgroundcolor, foregroundcolor: string;
+  lastfile, lasttext, searchstr, filtertext, path: string;
+  startmaximized, minimizetotray, backgroundcolor, foregroundcolor: string;
   fontsize, startpos, listsize: integer;
+  mask: Word;
 
 implementation
 
@@ -152,6 +163,15 @@ begin
   initialsettings;
   readsettings;
   favoritesfromini;
+
+  TrayIconData.cbSize := SizeOf(TrayIconData);
+  TrayIconData.Wnd := Handle;
+  TrayIconData.uID := 0;
+  TrayIconData.uFlags := NIF_MESSAGE + NIF_ICON + NIF_TIP;
+  TrayIconData.uCallbackMessage := WM_ICONTRAY;
+  TrayIconData.hIcon := Application.Icon.Handle;
+  StrPCopy(TrayIconData.szTip, Application.Title);
+  Shell_NotifyIcon(NIM_ADD, @TrayIconData);
   MonthCalendar1.Date := now;
   CheckBox1.checked := True;
   CheckBox2.checked := False;
@@ -169,6 +189,45 @@ begin
     InitialDir := ExtractFilePath(Application.ExeName);
     Filter := 'Text files (*.txt)|*.txt';
   end;
+
+end;
+
+// Hides the form.
+
+procedure TForm1.formhide(Sender: TObject);
+begin
+  if Lowercase(minimizetotray) = 'yes' then
+    begin
+      Form1.Hide;
+      Form2.Hide;
+      ShowWindow(Application.Handle, SW_Hide);
+    end;
+end;
+
+// Hides the form on Close instead of closing/unloading the form.
+
+procedure TForm1.hideit(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caNone;
+  Form1.Visible := false;
+end;
+
+// Tray commands. Left mouse button shows form, right mouse button shows menu.
+
+procedure TForm1.TrayMessage(var Msg: TMessage);
+var p: TPoint;
+begin
+  case Msg.lParam of
+    WM_LBUTTONDOWN: begin
+        Form1.Show;
+        Application.Restore;
+        Application.BringToFront;
+      end;
+    WM_RBUTTONDOWN: begin
+        GetCursorPos(p);
+        PopUpMenu2.Popup(p.x, p.y);
+      end;
+  end;
 end;
 
 // Write the default settings in an .ini file if no such file exists.
@@ -184,6 +243,7 @@ begin
     WriteLn(myFile, '[Settings]');
     WriteLn(myFile, 'path=', ExtractFilePath(Application.ExeName) + 'entries\');
     WriteLn(myFile, 'startmaximized=no');
+    WriteLn(myFile, 'minimizetotray=no');
     WriteLn(myFile, 'backgroundcolor=#101010');
     WriteLn(myFile, 'foregroundcolor=#D6D6D6');
     WriteLn(myFile, 'fontsize=12');
@@ -203,9 +263,11 @@ begin
   if startmaximized <> 'done' then
     startmaximized := appINI.ReadString('Settings', 'startmaximized',
       startmaximized);
-  backgroundcolor := appINI.ReadString('Settings', 'backgroundcolor',
+    minimizetotray := appINI.ReadString('Settings', 'minimizetotray',
+      minimizetotray);
+    backgroundcolor := appINI.ReadString('Settings', 'backgroundcolor',
     backgroundcolor);
-  foregroundcolor := appINI.ReadString('Settings', 'foregroundcolor',
+    foregroundcolor := appINI.ReadString('Settings', 'foregroundcolor',
     foregroundcolor);
   fontsize := appINI.ReadInteger('Settings', 'fontsize', fontsize);
   RichEdit1.font.Size := fontsize;
@@ -240,6 +302,7 @@ procedure TForm1.positioning(Sender: TObject);
 var
   rightspacer: integer;
 begin
+  ApplicationEvents1.Activate;
   rightspacer := 20;
   RichEdit1.Left := 0;
   RichEdit1.Top := 0;
@@ -753,7 +816,11 @@ end;
 
 procedure TForm1.exit(Sender: TObject);
 begin
-  if confirmchanges <> mrCancel then Application.Terminate;
+  if confirmchanges <> mrCancel then
+    begin
+    Shell_NotifyIcon(NIM_DELETE, @TrayIconData);
+    Application.Terminate;
+    end;
 end;
 
 procedure TForm1.Undo1Click(Sender: TObject);
@@ -949,8 +1016,17 @@ end;
 
 procedure TForm1.About(Sender: TObject);
 begin
-  Application.MessageBox('Journalista 2.0.0 - MIT License' + sLineBreak +
-    'Copyright © MMXXI, Shpati Koleka.', 'About Program', 0)
+  Application.MessageBox('Journalista 2.0.1 - MIT License' + sLineBreak +
+    'Copyright © MMXXII, Shpati Koleka.', 'About Program', 0)
+end;
+
+// Popup 'Show' menu item OnClick
+
+procedure TForm1.ShowClick(Sender: TObject);
+begin
+  Form1.Show;
+  Application.Restore;
+  Application.BringToFront;
 end;
 
 end.
