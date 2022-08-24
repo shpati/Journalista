@@ -18,4 +18,6 @@ Some of the program features are:
 -	Convertion from UTF-8 format to ANSI. This is useful for opening text files created by other programs in UTF-8 format.
 -	The color theme can be customized to better match the user preferences. 
 -	The location of the entries folder can be freely selected by the user. PRO TIP: Consider selecting the 'entries' folder inside your cloud storage folder (if you use one) so that you can access the journal entries from any device.
+-	The program can be minimized to system tray.
+-	There is also a reminder functionality that is helpful with establishing journaling habits. It works only when the program is already loaded or minimized to tray. 
 -	It's a free program (MIT license) so you can do whatever you want with the code. 
