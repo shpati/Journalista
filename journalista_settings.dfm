@@ -1,9 +1,9 @@
 object Form2: TForm2
-  Left = 734
-  Top = 754
+  Left = 1251
+  Top = 663
   BorderStyle = bsDialog
   Caption = 'Settings'
-  ClientHeight = 98
+  ClientHeight = 128
   ClientWidth = 468
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -72,6 +72,13 @@ object Form2: TForm2
     Height = 13
     Caption = 'Minimize Program to Tray'
   end
+  object Label7: TLabel
+    Left = 26
+    Top = 98
+    Width = 120
+    Height = 13
+    Caption = 'Set reminder at (HH:MM):'
+  end
   object Edit1: TEdit
     Left = 10
     Top = 28
@@ -137,6 +144,125 @@ object Form2: TForm2
     Caption = 'CheckBox2'
     TabOrder = 4
     OnClick = minchange
+  end
+  object CheckBox3: TCheckBox
+    Left = 8
+    Top = 96
+    Width = 17
+    Height = 17
+    Caption = 'CheckBox3'
+    TabOrder = 5
+    OnClick = reminderchange
+  end
+  object ComboBox2: TComboBox
+    Left = 152
+    Top = 94
+    Width = 41
+    Height = 21
+    Hint = 'Hour'
+    Enabled = False
+    ItemHeight = 13
+    TabOrder = 6
+    Text = '12'
+    OnClick = reminderchange
+    Items.Strings = (
+      '00'
+      '01'
+      '02'
+      '03'
+      '04'
+      '05'
+      '06'
+      '07'
+      '08'
+      '09'
+      '10'
+      '11'
+      '12'
+      '13'
+      '14'
+      '15'
+      '16'
+      '17'
+      '18'
+      '19'
+      '20'
+      '21'
+      '22'
+      '23')
+  end
+  object ComboBox3: TComboBox
+    Left = 200
+    Top = 94
+    Width = 41
+    Height = 21
+    Hint = 'Minute'
+    Enabled = False
+    ItemHeight = 13
+    TabOrder = 7
+    Text = '00'
+    OnClick = reminderchange
+    Items.Strings = (
+      '00'
+      '01'
+      '02'
+      '03'
+      '04'
+      '05'
+      '06'
+      '07'
+      '08'
+      '09'
+      '10'
+      '11'
+      '12'
+      '13'
+      '14'
+      '15'
+      '16'
+      '17'
+      '18'
+      '19'
+      '20'
+      '21'
+      '22'
+      '23'
+      '24'
+      '25'
+      '26'
+      '27'
+      '28'
+      '29'
+      '30'
+      '31'
+      '32'
+      '33'
+      '34'
+      '35'
+      '36'
+      '37'
+      '38'
+      '39'
+      '40'
+      '41'
+      '42'
+      '43'
+      '44'
+      '45'
+      '46'
+      '47'
+      '48'
+      '49'
+      '50'
+      '51'
+      '52'
+      '53'
+      '54'
+      '55'
+      '56'
+      '57'
+      '58'
+      '59')
   end
   object ColorDialog1: TColorDialog
     Left = 416

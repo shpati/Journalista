@@ -24,6 +24,10 @@ type
     Button1: TButton;
     Label6: TLabel;
     CheckBox2: TCheckBox;
+    CheckBox3: TCheckBox;
+    Label7: TLabel;
+    ComboBox2: TComboBox;
+    ComboBox3: TComboBox;
     procedure load(Sender: TObject);
     procedure forecolor(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
@@ -34,6 +38,7 @@ type
     procedure maxchange(Sender: TObject);
     procedure browse(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure minchange(Sender: TObject);
+    procedure reminderchange(Sender: TObject);
 
   private
     { Private declarations }
@@ -55,7 +60,7 @@ uses journalista_main;
 procedure TForm2.load(Sender: TObject);
 var
   appINI: TIniFile;
-  path: string;
+  path,hh,mm: string;
 begin
   appINI := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
   path := appINI.ReadString('Settings', 'path', path);
@@ -66,8 +71,17 @@ begin
   Button1.Width := Form2.Width - Button1.Left - 14;
   if Lowercase(appINI.ReadString('Settings', 'startmaximized', startmaximized))
     = 'yes' then checkbox1.checked := true;
-  if Lowercase(appINI.ReadString('Settings', 'minimizetotray', startmaximized))
+  if Lowercase(appINI.ReadString('Settings', 'minimizetotray', minimizetotray))
     = 'yes' then checkbox2.checked := true;
+  hh:= Copy(reminder, 1, 2);
+  mm:= Copy(reminder, 4, 2);
+  if StrScan(PAnsiChar(reminder), ':') <> nil then
+    begin
+      checkbox3.checked := true;
+      ComboBox2.Text := hh;
+      ComboBox3.Text := mm;
+    end;
+
 end;
 
 // Select the foreground color.
@@ -173,6 +187,30 @@ begin
     begin
     minimizetotray := 'no';
     appINI.WriteString('Settings', 'minimizetotray', 'no');
+    end;
+  Form2.Edit1.SetFocus;
+end;
+
+
+
+procedure TForm2.reminderchange(Sender: TObject);
+var
+  appINI: TIniFile;
+begin
+  appINI := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+  if checkbox3.checked = true then
+    begin
+    reminder := ComboBox2.Text + ':' + ComboBox3.Text;
+    appINI.WriteString('Settings', 'reminder', reminder);
+    ComboBox2.Enabled := true;
+    ComboBox3.Enabled := true;
+    end;
+  if checkbox3.checked = false then
+    begin
+    reminder := 'no';
+    appINI.WriteString('Settings', 'reminder', 'no');
+    ComboBox2.Enabled := false;
+    ComboBox3.Enabled := false;
     end;
   Form2.Edit1.SetFocus;
 end;

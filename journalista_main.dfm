@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 1121
-  Top = 141
+  Left = 1241
+  Top = 146
   AutoScroll = False
   Caption = 'Journalista'
   ClientHeight = 426
@@ -79,7 +79,7 @@ object Form1: TForm1
     Top = 0
     Width = 201
     Height = 161
-    Date = 44255.740264594910000000
+    Date = 44255.458631909720000000
     TabOrder = 0
     WeekNumbers = True
     OnClick = checkboxclick
@@ -367,5 +367,9 @@ object Form1: TForm1
   object ApplicationEvents1: TApplicationEvents
     OnMinimize = formhide
     Left = 272
+  end
+  object Timer1: TTimer
+    OnTimer = Timer1Timer
+    Left = 368
   end
 end

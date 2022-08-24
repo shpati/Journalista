@@ -75,6 +75,7 @@ type
     ShowProgram1: TMenuItem;
     ExitProgram1: TMenuItem;
     ApplicationEvents1: TApplicationEvents;
+    Timer1: TTimer;
     procedure formCreate(Sender: TObject);
     procedure formhide(Sender: TObject);
     procedure hideit(Sender: TObject; var Action: TCloseAction);
@@ -133,6 +134,8 @@ type
     procedure Settings(Sender: TObject);
     procedure About(Sender: TObject);
     procedure ShowClick(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
+
 
   private
     TrayIconData: TNotifyIconData;
@@ -142,9 +145,9 @@ type
 
 var
   Form1: TForm1;
-  lastfile, lasttext, searchstr, filtertext, path: string;
+  lastfile, lasttext, searchstr, filtertext, path, reminder: string;
   startmaximized, minimizetotray, backgroundcolor, foregroundcolor: string;
-  fontsize, startpos, listsize: integer;
+  fontsize, startpos, listsize : integer;
   mask: Word;
 
 implementation
@@ -163,7 +166,6 @@ begin
   initialsettings;
   readsettings;
   favoritesfromini;
-
   TrayIconData.cbSize := SizeOf(TrayIconData);
   TrayIconData.Wnd := Handle;
   TrayIconData.uID := 0;
@@ -247,6 +249,7 @@ begin
     WriteLn(myFile, 'backgroundcolor=#101010');
     WriteLn(myFile, 'foregroundcolor=#D6D6D6');
     WriteLn(myFile, 'fontsize=12');
+    Writeln(myFile, 'reminder=no');
     WriteLn(myFile, '');
     System.Closefile(myFile);
   end;
@@ -263,13 +266,15 @@ begin
   if startmaximized <> 'done' then
     startmaximized := appINI.ReadString('Settings', 'startmaximized',
       startmaximized);
-    minimizetotray := appINI.ReadString('Settings', 'minimizetotray',
-      minimizetotray);
-    backgroundcolor := appINI.ReadString('Settings', 'backgroundcolor',
+  minimizetotray := appINI.ReadString('Settings', 'minimizetotray',
+    minimizetotray);
+  backgroundcolor := appINI.ReadString('Settings', 'backgroundcolor',
     backgroundcolor);
-    foregroundcolor := appINI.ReadString('Settings', 'foregroundcolor',
+  foregroundcolor := appINI.ReadString('Settings', 'foregroundcolor',
     foregroundcolor);
   fontsize := appINI.ReadInteger('Settings', 'fontsize', fontsize);
+  reminder := appINI.ReadString('Settings', 'reminder',
+    reminder);
   RichEdit1.font.Size := fontsize;
   RichEdit1.Color := HtmlToColor(backgroundcolor, $101010);
   RichEdit1.font.color := HtmlToColor(foregroundcolor, $D6D6D6);
@@ -1016,7 +1021,7 @@ end;
 
 procedure TForm1.About(Sender: TObject);
 begin
-  Application.MessageBox('Journalista 2.0.1 - MIT License' + sLineBreak +
+  Application.MessageBox('Journalista 2.0.2 - MIT License' + sLineBreak +
     'Copyright © MMXXII, Shpati Koleka.', 'About Program', 0)
 end;
 
@@ -1027,6 +1032,23 @@ begin
   Form1.Show;
   Application.Restore;
   Application.BringToFront;
+end;
+
+procedure TForm1.Timer1Timer(Sender: TObject);
+var
+  formattedTime : string;
+  remind: integer;
+begin
+  ShortTimeFormat := 'hh:nn:ss';
+  DateTimeToString(formattedTime, 't', Time);
+  if formattedTime = reminder + ':00' then
+    begin
+    remind := Windows.MessageBox(handle,
+    'This is a reminder from Journalista.'#13#10'Would you like to display the program?',
+    'Reminder',
+    MB_SYSTEMMODAL or MB_SETFOREGROUND or MB_TOPMOST or MB_ICONINFORMATION or MB_YESNO) ;
+    if remind = mrYes then ShowClick(Form1);
+    end;
 end;
 
 end.
