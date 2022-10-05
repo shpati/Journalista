@@ -147,7 +147,7 @@ var
   Form1: TForm1;
   lastfile, lasttext, searchstr, filtertext, path, reminder: string;
   startmaximized, minimizetotray, backgroundcolor, foregroundcolor: string;
-  fontsize, startpos, listsize : integer;
+  fontsize, startpos, listsize: integer;
   mask: Word;
 
 implementation
@@ -199,11 +199,11 @@ end;
 procedure TForm1.formhide(Sender: TObject);
 begin
   if Lowercase(minimizetotray) = 'yes' then
-    begin
-      Form1.Hide;
-      Form2.Hide;
-      ShowWindow(Application.Handle, SW_Hide);
-    end;
+  begin
+    Form1.Hide;
+    Form2.Hide;
+    ShowWindow(Application.Handle, SW_Hide);
+  end;
 end;
 
 // Hides the form on Close instead of closing/unloading the form.
@@ -822,10 +822,10 @@ end;
 procedure TForm1.exit(Sender: TObject);
 begin
   if confirmchanges <> mrCancel then
-    begin
+  begin
     Shell_NotifyIcon(NIM_DELETE, @TrayIconData);
     Application.Terminate;
-    end;
+  end;
 end;
 
 procedure TForm1.Undo1Click(Sender: TObject);
@@ -1036,19 +1036,19 @@ end;
 
 procedure TForm1.Timer1Timer(Sender: TObject);
 var
-  formattedTime : string;
+  formattedTime: string;
   remind: integer;
 begin
   ShortTimeFormat := 'hh:nn:ss';
   DateTimeToString(formattedTime, 't', Time);
   if formattedTime = reminder + ':00' then
-    begin
+  begin
     remind := Windows.MessageBox(handle,
-    'This is a reminder from Journalista.'#13#10'Would you like to display the program?',
-    'Reminder',
-    MB_SYSTEMMODAL or MB_SETFOREGROUND or MB_TOPMOST or MB_ICONINFORMATION or MB_YESNO) ;
+      'This is a reminder from Journalista.'#13#10'Would you like to display the program?',
+      'Reminder',
+      MB_SYSTEMMODAL or MB_SETFOREGROUND or MB_TOPMOST or MB_ICONINFORMATION or MB_YESNO);
     if remind = mrYes then ShowClick(Form1);
-    end;
+  end;
 end;
 
 end.

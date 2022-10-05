@@ -60,7 +60,7 @@ uses journalista_main;
 procedure TForm2.load(Sender: TObject);
 var
   appINI: TIniFile;
-  path,hh,mm: string;
+  path, hh, mm: string;
 begin
   appINI := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
   path := appINI.ReadString('Settings', 'path', path);
@@ -73,14 +73,14 @@ begin
     = 'yes' then checkbox1.checked := true;
   if Lowercase(appINI.ReadString('Settings', 'minimizetotray', minimizetotray))
     = 'yes' then checkbox2.checked := true;
-  hh:= Copy(reminder, 1, 2);
-  mm:= Copy(reminder, 4, 2);
+  hh := Copy(reminder, 1, 2);
+  mm := Copy(reminder, 4, 2);
   if StrScan(PAnsiChar(reminder), ':') <> nil then
-    begin
-      checkbox3.checked := true;
-      ComboBox2.Text := hh;
-      ComboBox3.Text := mm;
-    end;
+  begin
+    checkbox3.checked := true;
+    ComboBox2.Text := hh;
+    ComboBox3.Text := mm;
+  end;
 
 end;
 
@@ -170,7 +170,7 @@ end;
 procedure TForm2.browse(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  if (ord(Key)=27) then Close else Button1Click(Form2);
+  if (ord(Key) = 27) then Close else Button1Click(Form2);
 end;
 
 procedure TForm2.minchange(Sender: TObject);
@@ -179,15 +179,15 @@ var
 begin
   appINI := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
   if checkbox2.checked = true then
-    begin
+  begin
     minimizetotray := 'yes';
     appINI.WriteString('Settings', 'minimizetotray', 'yes');
-    end;
+  end;
   if checkbox2.checked = false then
-    begin
+  begin
     minimizetotray := 'no';
     appINI.WriteString('Settings', 'minimizetotray', 'no');
-    end;
+  end;
   Form2.Edit1.SetFocus;
 end;
 
@@ -199,19 +199,19 @@ var
 begin
   appINI := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
   if checkbox3.checked = true then
-    begin
+  begin
     reminder := ComboBox2.Text + ':' + ComboBox3.Text;
     appINI.WriteString('Settings', 'reminder', reminder);
     ComboBox2.Enabled := true;
     ComboBox3.Enabled := true;
-    end;
+  end;
   if checkbox3.checked = false then
-    begin
+  begin
     reminder := 'no';
     appINI.WriteString('Settings', 'reminder', 'no');
     ComboBox2.Enabled := false;
     ComboBox3.Enabled := false;
-    end;
+  end;
   Form2.Edit1.SetFocus;
 end;
 
